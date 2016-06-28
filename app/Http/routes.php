@@ -15,14 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/tareas', function () {
-    return view('tareas.index');
-});
-
-Route::get('/tareas/new',function(Request $request){
-	return view('tareas.new');
-});
-
-Route::delete('tareas/{tarea}', function(Task $tarea){
-	return view('tareas.show');
-});
+Route::resource('tareas','tareas\TareasController');
