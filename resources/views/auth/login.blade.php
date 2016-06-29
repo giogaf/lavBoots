@@ -10,7 +10,7 @@
 	</div>	
 	<div class="form-group">
 		{{ Form::label('Password') }}
-		{{ Form::text('pass',null,['class'=>'form-control']) }}
+		{{ Form::text('password',null,['class'=>'form-control']) }}
 	</div>	
 	<div class="form-group">
 		{{ Form::submit('Ingresar') }}
