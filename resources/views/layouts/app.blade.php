@@ -11,6 +11,7 @@
     <body>
         <div class="container">
             @include('layouts.nav')
+            @include('layouts.flash')
             @yield('content')
         </div>
         

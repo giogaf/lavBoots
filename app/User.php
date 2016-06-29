@@ -23,4 +23,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * asociacion tareas-usuario
+     */
+    public function tareas()
+    {
+        return $this->hasMany(Tarea::class);
+    }
 }

@@ -6,18 +6,37 @@ use Illuminate\Http\Request;
 use App\Tarea;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Repositories\TareaRepository;
 
 class TareasController extends Controller
 {
+
+    protected $tareas;
+
+    /**
+     * Funcion para autencicacion de usuarios
+     */
+    public function __construct(TareaRepository $t)
+    {
+        $this->middleware('auth');
+
+        $this->tareas = $t;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {   
-        $tareas = Tarea::all();
-        return view('tareas.index',['tareas'=>$tareas]);
+        // $tareas = Tarea::all();
+        // $tareas = Tarea::where('user_id',$request->user()->id)->get();
+        
+        // return view('tareas.index',['tareas'=>$tareas]);
+        return view('tareas.index',[
+            'tareas' => $this->tareas->paraUsuario($request->user())
+            ]);
     }
 
     /**
@@ -39,9 +58,14 @@ class TareasController extends Controller
     public function store(Request $request)
     {
         // dd($request['nombre']);
-        $tarea = new Tarea;
-        $tarea->nombre = $request->nombre;
-        $tarea->save();
+        $this->validate($request,['nombre'=>'required|max:255']);
+
+        $request->user()->tareas()->create([
+        'nombre'=>$request->nombre,
+            ]);
+        // $tarea = new Tarea;
+        // $tarea->nombre = $request->nombre;
+        // $tarea->save();
         // dd($tarea);
         return redirect()->route('tareas.index');
     }
@@ -88,8 +112,9 @@ class TareasController extends Controller
      */
     public function destroy($id)
     {
-        
-        $tarea = Tarea::find($id);        
+        $tarea = Tarea::find($id);  
+        $this->authorize('destroy',$tarea);
+              
         $tarea->delete();
         return redirect()->action('tareas\TareasController@index');
     }

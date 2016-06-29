@@ -14,7 +14,15 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
+      @if(Auth::check())
+        <li>{{ link_to('auth/logout','Salir') }}</li>
+      @else
+        <li>{{ link_to('auth/register','Registrarse') }}</li>
+        <li>{{ link_to('auth/login','Ingresar') }}</li>      
+      @endif
+      
       <li>{{ link_to('tareas/create','Nueva Tarea') }}</li>
+
         <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
         <li><a href="#">Link</a></li>
         <li class="dropdown">
