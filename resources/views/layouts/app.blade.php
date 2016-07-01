@@ -19,7 +19,7 @@
         {{HTML::style('css/app.css')}}
         {{HTML::style('css/bootstrap.min.css')}}
 
-        <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+        <link rel="stylesheet" type="text/css" href="/css/sweetalert.css">
 
 
     </head>
@@ -33,8 +33,10 @@
         
         {{ HTML::script('js/jquery.min.js') }}
         {{ HTML::script('js/bootstrap.min.js') }}
-
-        <script src="js/sweetalert.js"></script>
+        
+        <script src="/js/sweetalert.js"></script>
     @include('Alerts::show')
+     {{-- auxiliar script confirmación de eliminación  --}}
+    @yield('scripts')
     </body>
 </html>

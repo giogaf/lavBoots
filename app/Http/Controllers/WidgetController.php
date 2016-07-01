@@ -116,7 +116,7 @@ class WidgetController extends Controller
             'slug' => $slug,
             'user_id' => Auth::id()
             ]);
-        alert()->overlay('Actualizado widget: '.$item->nombre);
+        alert()->overlay('Actualización','Actualizado widget: '.$item->nombre);
 
         return redirect()->route('widgets.show',['widget' => $item,'slug' => $slug]);
     }
@@ -132,7 +132,7 @@ class WidgetController extends Controller
         //
         Widget::destroy($id);
 
-        alert()->overlay('Widget '.$id. 'ha sido eliminado');
+        alert()->overlay('Eliminar','Widget '.$id. 'ha sido eliminado');
 
         return redirect()->route('widgets.index');
     }

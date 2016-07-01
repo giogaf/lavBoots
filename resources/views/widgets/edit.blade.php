@@ -13,7 +13,8 @@
 	<div class="panel-heading"> Crear Nuevo Widget </div>
 	<div class="panel-body">
 	@include('errors.list')
-	@include('widgets.form')			
+	@include('widgets.form')
+	<a href="/widgets/{{ $item->id }}-{{ $item->slug}}" class="btn btn-info">Atrás</a>		
 	</div>					
 </div>
 @stop
