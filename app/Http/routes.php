@@ -25,6 +25,10 @@ Route::get('/', ['uses' => 'PaginasController@index','as' => 'home']);
 
 Route::get('prueba',['uses' => 'PruebasController@index','as' => 'pruebas.index']);
 
-Route::resource('widget','WidgetController');
+Route::get('widgets/create',['uses' => 'WidgetController@create', 'as' => 'widgets.create']);
+
+Route::get('widgets/{id}-{slug}',['uses' => 'WidgetController@show','as' => 'widgets.show']);
+
+Route::resource('widgets','WidgetController',['except' => ['show','create']]);
 //API
 Route::any('api','ApiController@widgetData');

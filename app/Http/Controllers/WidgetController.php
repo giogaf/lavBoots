@@ -6,8 +6,17 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+use App\Widget;
+use Illuminate\Support\Facades\Auth;
+
 class WidgetController extends Controller
 {
+
+    public function __construct()
+    {
+        // $this->middleware('auth', ['except' => ['index', 'show']]);
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +25,8 @@ class WidgetController extends Controller
     public function index()
     {
         //
-        return view('widget.index');
+        $items = Widget::all();
+        return view('widgets.index',compact('items'));
     }
 
     /**
@@ -27,7 +37,7 @@ class WidgetController extends Controller
     public function create()
     {
         //
-        return view('widget.create');
+        return view('widgets.create');
     }
 
     /**
@@ -40,15 +50,18 @@ class WidgetController extends Controller
     {
         //
         $this->validate($request,[
-            'nombre' => 'required|unique:widgets|alpha_num|mas:40'
+            'nombre' => 'required|unique:widgets|string|max:40'
             ]);
-        
-        $item =  Widget::create(['nombre'=> $request->nombre]);
-        $item.save();
+        $slug = str_slug($request->nombre,'-');
+        $item =  Widget::create(['nombre'=> $request->nombre,
+                                'slug' => $slug,
+                                'user_id' => Auth::id()
+                                ]);
+        $item->save();
 
-        alert()->success('Elemento widget guardado');
+        alert()->overlay('Guardado','Elemento widget'.$item->slug.' guardado');
 
-        return redirect()->route('widget.index');
+        return redirect()->route('widgets.index');
     }
 
     /**
@@ -57,9 +70,16 @@ class WidgetController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id,$slug = '')
     {
         //
+        $item = Widget::findOrFail($id);
+        if($item->slug !== $slug )
+        {
+            return redirect()->route('widgets.show',['id' => $item->id,
+                                    'slug' => $item->slug],301);
+        }
+        return view('widgets.show',compact('item'));
     }
 
     /**
@@ -71,6 +91,8 @@ class WidgetController extends Controller
     public function edit($id)
     {
         //
+        $item =  Widget::findOrFail($id);
+        return view('widgets.edit', compact('item'));
     }
 
     /**
@@ -83,6 +105,20 @@ class WidgetController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $this->validate($request,[
+            'nombre' => 'required|string|max:40|unique:widgets,nombre'.$id
+            ]);
+        $item = Widget::findOrFail($id);
+
+        $slug =  str_slug($request->nombre,'-');
+        $item->update([
+            'nombre' => $request->nombre,
+            'slug' => $slug,
+            'user_id' => Auth::id()
+            ]);
+        alert()->overlay('Actualizado widget: '.$item->nombre);
+
+        return redirect()->route('widgets.show',['widget' => $item,'slug' => $slug]);
     }
 
     /**
@@ -94,5 +130,10 @@ class WidgetController extends Controller
     public function destroy($id)
     {
         //
+        Widget::destroy($id);
+
+        alert()->overlay('Widget '.$id. 'ha sido eliminado');
+
+        return redirect()->route('widgets.index');
     }
 }

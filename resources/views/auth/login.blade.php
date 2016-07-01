@@ -38,7 +38,7 @@
 					</div>
 				</form>				
 				<br>
-				<a href="auth/register"  class=" col-md-offset-4">Registrarse</a>
+				<a href="/auth/register"  class=" col-md-offset-4">Registrarse</a>
 				<br><br>
 				<a href="/password/email" class=' col-md-offset-4'>Recuperar password</a>
 			</div>			
