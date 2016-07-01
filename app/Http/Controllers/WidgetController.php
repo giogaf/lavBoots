@@ -59,7 +59,7 @@ class WidgetController extends Controller
                                 ]);
         $item->save();
 
-        alert()->overlay('Guardado','Elemento widget'.$item->slug.' guardado');
+        alert()->overlay('Guardado','Widget -'.$item->slug.'- guardado');
 
         return redirect()->route('widgets.index');
     }

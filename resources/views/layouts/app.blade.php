@@ -19,15 +19,22 @@
         {{HTML::style('css/app.css')}}
         {{HTML::style('css/bootstrap.min.css')}}
 
+        <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+
+
     </head>
     <body>
         <div class="container">
-            @include('layouts.nav')
-            @include('Alerts::show')
+            @include('layouts.nav')            
             @yield('content')
         </div>
+
+
         
         {{ HTML::script('js/jquery.min.js') }}
         {{ HTML::script('js/bootstrap.min.js') }}
+
+        <script src="js/sweetalert.js"></script>
+    @include('Alerts::show')
     </body>
 </html>
